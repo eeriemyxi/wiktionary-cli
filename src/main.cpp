@@ -1,6 +1,9 @@
 #include "lexbor/dom/dom.h"
 #include "lexbor/html/html.h"
+
 #include "httplib.h"
+
+#include "proto/parse_word.h"
 #include <iostream>
 
 
@@ -21,6 +24,7 @@ int main() {
     //     "<div class=\"red pref_best grep\"></div>"
     //     "<div class=\"red best grep\"></div>"
     //     "<div class=\"red c++ best\"></div>";
+    my_func();
     std::string html = "<h2 class=\"city\">London</h2>";
 
     lxb_html_parser_t* parser = lxb_html_parser_create();

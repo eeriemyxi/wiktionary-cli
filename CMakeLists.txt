@@ -8,8 +8,13 @@ project(wiktionary-cli
     DESCRIPTION "Command-line interface for Wiktionary" 
     LANGUAGES CXX)
 
-add_executable(wiktionary-cli
-    src/main.cpp)
+file(GLOB SOURCES 
+    src/proto/*.h
+    src/impl/*.cpp
+    src/*.cpp
+)
+
+add_executable(wiktionary-cli ${SOURCES})
 
 target_compile_features(wiktionary-cli PRIVATE cxx_std_20)
 

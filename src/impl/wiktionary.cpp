@@ -1,0 +1,2 @@
+#include "../proto/wiktionary.h"
+
