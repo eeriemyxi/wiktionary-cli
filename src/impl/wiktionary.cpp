@@ -5,8 +5,8 @@
 #include <format>
 
 
-std::string support_lang_enum_to_str(SupportedLanguage enum_t){
-    switch (enum_t) {
+std::string support_lang_enum_to_str(SupportedLanguage lang){
+    switch (lang) {
         case SupportedLanguage::ENGLISH:
             return "en";
     }
