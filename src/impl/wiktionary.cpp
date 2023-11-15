@@ -13,13 +13,10 @@ std::string support_lang_enum_to_str(SupportedLanguage enum_t){
     return "en";
 }
 
-Wiktionary::Wiktionary() {
-    Wiktionary::LANGUAGE = SupportedLanguage::ENGLISH;
-    Wiktionary::BASE_URL = std::format("https://{}.{}.{}", support_lang_enum_to_str(LANGUAGE), "wiktionary", "org");
+Wiktionary::Wiktionary() : fetcher(BASE_URL) {
 };
 
 void Wiktionary::get_word_definition(const std::string& word) {
-    WiktionaryHTTPFetch fetcher(BASE_URL);
     std::string word_page_html = fetcher.fetch_word_page(word);
     ParseWordPage parser(word, word_page_html);
     parser.get_data();

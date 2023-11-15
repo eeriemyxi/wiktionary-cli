@@ -1,6 +1,7 @@
 #pragma once
+#include <httplib.h>
+
 #include <string>
-#include "httplib.h"
 
 class WiktionaryHTTPFetch {
     public:

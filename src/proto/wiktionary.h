@@ -1,6 +1,9 @@
 #pragma once
-#include "httplib.h"
+#include <httplib.h>
+
 #include "../proto/http_fetch.h"
+
+#include <format>
 
 
 enum SupportedLanguage {
@@ -11,9 +14,9 @@ std::string support_lang_enum_to_str(SupportedLanguage enum_t);
 
 class Wiktionary {
     public:
-        SupportedLanguage LANGUAGE;
-        std::string BASE_URL;
-        // WiktionaryHTTPFetch fetcher;
+        SupportedLanguage LANGUAGE = SupportedLanguage::ENGLISH;
+        std::string BASE_URL = std::format("https://{}.{}.{}", support_lang_enum_to_str(LANGUAGE), "wiktionary", "org");
+        WiktionaryHTTPFetch fetcher;
 
         Wiktionary();
         void get_word_definition(const std::string& word);

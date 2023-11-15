@@ -1,7 +1,6 @@
-#include "lexbor/dom/dom.h"
-#include "lexbor/html/html.h"
-
-#include "httplib.h"
+#include <lexbor/dom/dom.h>
+#include <lexbor/html/html.h>
+#include <httplib.h>
 
 #include "proto/wiktionary.h"
 

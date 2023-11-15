@@ -1,7 +1,9 @@
 #include "../proto/http_fetch.h"
-#include "httplib.h"
-#include <string>
+
+#include <httplib.h>
+
 #include <fmt/color.h>
+#include <string>
 
 
 WiktionaryHTTPFetch::WiktionaryHTTPFetch(const std::string& base_url) : client(base_url) {
