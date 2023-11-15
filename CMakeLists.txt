@@ -3,12 +3,12 @@ include(FetchContent)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(wiktionary-cli 
+project(wiktionary-cli
     VERSION 1.0 
     DESCRIPTION "Command-line interface for Wiktionary" 
     LANGUAGES CXX)
 
-file(GLOB SOURCES 
+file(GLOB_RECURSE SOURCES 
     src/proto/*.h
     src/impl/*.cpp
     src/*.cpp
@@ -28,5 +28,11 @@ FetchContent_Declare(httplib
 )
 FetchContent_MakeAvailable(httplib)
 
+FetchContent_Declare(fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+)
+FetchContent_MakeAvailable(fmt)
+
 target_link_libraries(wiktionary-cli PRIVATE lexbor)
+target_link_libraries(wiktionary-cli PRIVATE fmt)
 target_link_libraries(wiktionary-cli PRIVATE httplib::httplib)
