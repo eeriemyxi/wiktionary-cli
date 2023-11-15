@@ -18,4 +18,4 @@ Follow the build instructions. You should then be able to find `wiktionary-cli[.
 binary in the `build` directory.
 
 If you would like, you can move it to somewhere like `$USER[/.local]/bin` 
-or `%USER%/bin` then add the folder to your PATH environment variable.
+or `%HOME%/bin` then add the folder to your PATH environment variable.
