@@ -10,7 +10,7 @@ enum SupportedLanguage {
     ENGLISH,
 };
 
-std::string support_lang_enum_to_str(SupportedLanguage enum_t);
+std::string support_lang_enum_to_str(SupportedLanguage lang);
 
 class Wiktionary {
     public:
