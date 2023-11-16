@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
             case 102:
                 LOG_F(ERROR, "Empty word provided.");
         }
-        LOG_F(WARNING, "Exiting with code %d", code);
+        LOG_F(WARNING, "Exiting with code %d.", code);
         return code;
     }
 

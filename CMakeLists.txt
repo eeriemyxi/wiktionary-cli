@@ -20,28 +20,32 @@ target_compile_features(wiktionary-cli PRIVATE cxx_std_20)
 
 FetchContent_Declare(lexbor
     GIT_REPOSITORY https://github.com/lexbor/lexbor.git
+    GIT_TAG v2.3.0
 )
 
 FetchContent_Declare(httplib
     GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+    GIT_TAG v0.14.1
 )
 
 FetchContent_Declare(fmt
     GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG 10.1.1
 )
 
 FetchContent_Declare(loguru
+    # For some reason their latest tag release is
+    # Outdated. So I have to trust their master 
+    # branch. It is like this in their CMake example 
+    # as well. 
     GIT_REPOSITORY https://github.com/emilk/loguru.git
+    GIT_TAG master
 )
 
 FetchContent_Declare(CLI11
-    GIT_REPOSITORY https://github.com/CLIUtils/CLI11
-    GIT_TAG main
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+    GIT_TAG v2.3.2
 )
 FetchContent_MakeAvailable(lexbor httplib fmt loguru CLI11)
 
-target_link_libraries(wiktionary-cli PRIVATE lexbor)
-target_link_libraries(wiktionary-cli PRIVATE fmt)
-target_link_libraries(wiktionary-cli PRIVATE CLI11)
-target_link_libraries(wiktionary-cli PRIVATE loguru::loguru)
-target_link_libraries(wiktionary-cli PRIVATE httplib::httplib)
+target_link_libraries(wiktionary-cli PRIVATE lexbor httplib::httplib fmt loguru::loguru CLI11)
