@@ -24,5 +24,5 @@ class Wiktionary {
         WiktionaryHTTPFetch fetcher;
 
         Wiktionary();
-        int get_word_definition(const std::string& word);
+        void get_word_definition(const std::string& word);
 };

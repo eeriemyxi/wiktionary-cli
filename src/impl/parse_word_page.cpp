@@ -58,7 +58,7 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
     auto english_collection = lxb_dom_collection_make(&document->dom_document, 128);
 
     status = lxb_selectors_find(
-            selectors, 
+            selectors,
             body_node,
             selectors_list,
             [](lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx) -> lxb_status_t {

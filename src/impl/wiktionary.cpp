@@ -2,6 +2,7 @@
 #include "../proto/http_fetch.h"
 #include "../proto/parse_word_page.h"
 
+#include <cctype>
 #include <loguru.hpp>
 #include <format>
 
@@ -18,16 +19,16 @@ std::string support_lang_enum_to_iso_code(SupportedLanguage lang){
 Wiktionary::Wiktionary() : fetcher(BASE_URL) {
 };
 
-int Wiktionary::get_word_definition(const std::string& word) {
+void Wiktionary::get_word_definition(const std::string& word) {
+    if (word.empty() or std::all_of(word.begin(), word.end(), [](auto ch) {return std::isspace(ch);})) {
+        throw 102;
+    }
     std::string word_page_html = fetcher.fetch_word_page(word);
 
     if (word_page_html == "") {
-        LOG_F(WARNING, "Quitting, because of empty html response.");
-        return 1;
+        throw 101;
     }
 
     ParseWordPage parser(word, word_page_html, LANGUAGE);
     parser.get_data();
-
-    return 0;
 };
