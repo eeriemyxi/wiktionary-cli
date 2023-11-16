@@ -1,5 +1,6 @@
 #pragma once
 #include <lexbor/dom/dom.h>
+
 #include "../proto/wiktionary.h"
 
 #include <string>

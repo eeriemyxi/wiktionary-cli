@@ -1,9 +1,9 @@
-#include "../proto/wiktionary_http_fetch.h"
-#include "../proto/exceptions.h"
-
 #include <httplib.h>
 #include <loguru.hpp>
 #include <fmt/color.h>
+
+#include "../proto/wiktionary_http_fetch.h"
+#include "../proto/exceptions.h"
 
 #include <string>
 #include <format>
