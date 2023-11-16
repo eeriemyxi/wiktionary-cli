@@ -69,7 +69,7 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
                     },
                     NULL
                 );
-                std::cout << std::endl;
+                std::cout << '\n';
                 return LXB_STATUS_OK;
             },
             NULL
@@ -80,5 +80,5 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
 }
 
 void ParseWordPage::get_data() {
-    std::cout << "Hello world!\n\t- from the parser." << std::endl;
+    std::cout << "Hello world!\n\t- from the parser." << '\n';
 }
