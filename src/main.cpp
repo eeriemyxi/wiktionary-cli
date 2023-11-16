@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     } catch (int code) {
         switch (code) {
             case 101:
-                LOG_F(ERROR, "Fetched html respone is empty.");
+                LOG_F(ERROR, "Fetched HTML respone is empty.");
             case 102:
                 LOG_F(ERROR, "Empty word provided.");
         }
