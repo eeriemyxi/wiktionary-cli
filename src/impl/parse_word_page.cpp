@@ -6,7 +6,6 @@
 
 #include "../proto/parse_word_page.h"
 #include "../proto/wiktionary.h"
-#include "lexbor/core/base.h"
 
 #include <iostream>
 
