@@ -12,11 +12,13 @@ WiktionaryHTTPFetch::WiktionaryHTTPFetch(const std::string& base_url) : client(b
 
 std::string WiktionaryHTTPFetch::fetch_word_page(const std::string& word) {
     auto response = client.Get("/wiki/" + word);
+
+    LOG_F(INFO, "Response status for word page fetch request of word \"%s\": %d", word.data(), response->status);
     if (response->status != 200) {
-        LOG_F(ERROR, "%d: Failed to fetch word page.", response->status);
-        return "";
+        throw 301;
     }
 
-    LOG_F(INFO, "%d: Successfully fetched word page.", response->status);
+    LOG_F(INFO, "Successfully fetched word page of word \"%s\".", word.data());
+
     return response->body;
 }

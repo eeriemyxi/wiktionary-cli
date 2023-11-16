@@ -31,24 +31,24 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
     auto html_parser = lxb_html_parser_create();
     status = lxb_html_parser_init(html_parser);
     if (status != LXB_STATUS_OK) {
-        LOG_F(INFO, "Couldn't init html_parser.");
+        throw 201;
     }
 
     auto css_parser = lxb_css_parser_create();
     status = lxb_css_parser_init(css_parser, NULL);
     if (status != LXB_STATUS_OK) {
-        LOG_F(INFO, "Couldn't init css_parser.");
+        throw 202;
     }
 
     auto selectors = lxb_selectors_create();
     status = lxb_selectors_init(selectors);
     if (status!= LXB_STATUS_OK) {
-        LOG_F(INFO, "Couldn't init selectors.");
+        throw 203;
     }
 
     auto selectors_list = lxb_css_selectors_parse(css_parser, (lxb_char_t*) ("#" + lang_name).data(), lang_name.length() + 1);
     if (css_parser->status != LXB_STATUS_OK) {
-        LOG_F(INFO, "Couldn't parse for selectors_list.");
+        throw 204;
     }
 
     auto document = lxb_html_parse(html_parser, (lxb_char_t*) html.data(), html.size());
@@ -75,7 +75,7 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
             NULL
     );
     if (status != LXB_STATUS_OK) {
-        LOG_F(INFO, "Couldn't find selector.");
+        throw 205;
     }
 }
 

@@ -35,9 +35,21 @@ int main(int argc, char* argv[]) {
     } catch (int code) {
         switch (code) {
             case 101:
-                LOG_F(ERROR, "Fetched HTML respone is empty.");
-            case 102:
                 LOG_F(ERROR, "Empty word provided.");
+
+            case 201:
+                LOG_F(ERROR, "Couldn't init html_parser.");
+            case 202:
+                LOG_F(ERROR, "Couldn't init css_parser.");
+            case 203:
+                LOG_F(ERROR, "Couldn't init css selectors.");
+            case 204:
+                LOG_F(ERROR, "Couldn't parse for selector list.");
+            case 205:
+                LOG_F(ERROR, "Couldn't find selector.");
+
+            case 301:
+                LOG_F(ERROR, "Fetched HTML respone is empty.");
         }
         LOG_F(WARNING, "Exiting with code %d.", code);
         return code;
