@@ -1,4 +1,4 @@
-#include "../proto/http_fetch.h"
+#include "../proto/wiktionary_http_fetch.h"
 
 #include <httplib.h>
 #include <loguru.hpp>

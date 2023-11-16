@@ -1,7 +1,7 @@
 #pragma once
 #include <httplib.h>
 
-#include "../proto/http_fetch.h"
+#include "../proto/wiktionary_http_fetch.h"
 
 #include <format>
 

@@ -1,5 +1,5 @@
 #include "../proto/wiktionary.h"
-#include "../proto/http_fetch.h"
+#include "../proto/wiktionary_http_fetch.h"
 #include "../proto/parse_word_page.h"
 
 #include <cctype>
