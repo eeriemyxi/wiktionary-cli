@@ -33,6 +33,12 @@ FetchContent_Declare(fmt
 )
 FetchContent_MakeAvailable(fmt)
 
+FetchContent_Declare(loguru
+    GIT_REPOSITORY https://github.com/emilk/loguru.git
+)
+FetchContent_MakeAvailable(loguru)
+
 target_link_libraries(wiktionary-cli PRIVATE lexbor)
 target_link_libraries(wiktionary-cli PRIVATE fmt)
+target_link_libraries(wiktionary-cli PRIVATE loguru::loguru)
 target_link_libraries(wiktionary-cli PRIVATE httplib::httplib)

@@ -10,14 +10,19 @@ enum SupportedLanguage {
     ENGLISH,
 };
 
-std::string support_lang_enum_to_str(SupportedLanguage lang);
+std::string support_lang_enum_to_iso_code(SupportedLanguage lang);
 
 class Wiktionary {
     public:
         SupportedLanguage LANGUAGE = SupportedLanguage::ENGLISH;
-        std::string BASE_URL = std::format("https://{}.{}.{}", support_lang_enum_to_str(LANGUAGE), "wiktionary", "org");
+
+        std::string SUBDOMAIN = support_lang_enum_to_iso_code(LANGUAGE);
+        std::string DOMAIN = "wiktionary";
+        std::string TLD = "org";
+        std::string BASE_URL = std::format("https://{}.{}.{}", SUBDOMAIN, DOMAIN, TLD);
+
         WiktionaryHTTPFetch fetcher;
 
         Wiktionary();
-        void get_word_definition(const std::string& word);
+        int get_word_definition(const std::string& word);
 };
