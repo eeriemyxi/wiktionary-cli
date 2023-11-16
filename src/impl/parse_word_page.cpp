@@ -5,6 +5,7 @@
 #include <loguru.hpp>
 
 #include "../proto/parse_word_page.h"
+#include "../proto/exceptions.h"
 #include "../proto/wiktionary.h"
 
 #include <iostream>
@@ -22,33 +23,33 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
     lxb_status_t status;
 
     ParseWordPage::word = word;
-    LOG_F(INFO, "Word: %s.", word.data());
+    LOG_F(INFO, "Parsing word page of word \"%s\".", word.data());
     ParseWordPage::html = html;
     LOG_F(INFO, "HTML Length: %d.", (int) html.length());
     std::string lang_name = support_lang_enum_to_name(lang);
-    LOG_F(INFO, "Language: %s.", lang_name.data());
+    LOG_F(INFO, "Page Language: %s.", lang_name.data());
 
     auto html_parser = lxb_html_parser_create();
     status = lxb_html_parser_init(html_parser);
     if (status != LXB_STATUS_OK) {
-        throw 201;
+        throw AppException(201, "Couldn't init html_parser.");
     }
 
     auto css_parser = lxb_css_parser_create();
     status = lxb_css_parser_init(css_parser, NULL);
     if (status != LXB_STATUS_OK) {
-        throw 202;
+        throw AppException(202, "Couldn't init css_parser.");
     }
 
     auto selectors = lxb_selectors_create();
     status = lxb_selectors_init(selectors);
     if (status!= LXB_STATUS_OK) {
-        throw 203;
+        throw AppException(203, "Couldn't init css selectors.");
     }
 
     auto selectors_list = lxb_css_selectors_parse(css_parser, (lxb_char_t*) ("#" + lang_name).data(), lang_name.length() + 1);
     if (css_parser->status != LXB_STATUS_OK) {
-        throw 204;
+        throw AppException(204, "Couldn't parse for selector list.");
     }
 
     auto document = lxb_html_parse(html_parser, (lxb_char_t*) html.data(), html.size());
@@ -75,7 +76,7 @@ ParseWordPage::ParseWordPage(const std::string& word, const std::string& html, c
             NULL
     );
     if (status != LXB_STATUS_OK) {
-        throw 205;
+        throw AppException(205, "Couldn't find selector.");
     }
 }
 

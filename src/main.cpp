@@ -5,6 +5,7 @@
 #include <loguru.hpp>
 
 #include "proto/wiktionary.h"
+#include "proto/exceptions.h"
 
 #include <iostream>
 
@@ -32,27 +33,29 @@ int main(int argc, char* argv[]) {
     
     try {
         wiki.get_word_definition(WORD); 
-    } catch (int code) {
-        switch (code) {
+    } catch (AppException err) {
+        switch (err.error_code) {
+            /* boiler plate in case I want
+             * want to handle them someday
+             */
             case 101:
-                LOG_F(ERROR, "Empty word provided.");
-
+                break;
             case 201:
-                LOG_F(ERROR, "Couldn't init html_parser.");
+                break;
             case 202:
-                LOG_F(ERROR, "Couldn't init css_parser.");
+                break;
             case 203:
-                LOG_F(ERROR, "Couldn't init css selectors.");
+                break;
             case 204:
-                LOG_F(ERROR, "Couldn't parse for selector list.");
+                break;
             case 205:
-                LOG_F(ERROR, "Couldn't find selector.");
-
+                break;
             case 301:
-                LOG_F(ERROR, "Fetched HTML respone is empty.");
+                break;
         }
-        LOG_F(WARNING, "Exiting with code %d.", code);
-        return code;
+        LOG_F(ERROR, "%s", err.message.data());
+        LOG_F(WARNING, "Exiting with code %d.", err.error_code);
+        return err.error_code;
     }
 
     return 0;
