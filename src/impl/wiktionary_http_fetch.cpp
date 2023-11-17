@@ -3,6 +3,7 @@
 #include <fmt/color.h>
 
 #include "../proto/wiktionary_http_fetch.h"
+#include "../proto/util/url_encode.h"
 #include "../proto/exceptions.h"
 
 #include <string>
@@ -13,7 +14,10 @@ WiktionaryHTTPFetch::WiktionaryHTTPFetch(const std::string& base_url) : client(b
 }
 
 std::string WiktionaryHTTPFetch::fetch_word_page(const std::string& word) {
-    auto response = client.Get("/wiki/" + word);
+    std::string url = "/wiki/" + util::url_encode(word);
+    LOG_F(INFO, "Fetching word page URL: %s", url.data());
+
+    auto response = client.Get(url);
 
     LOG_F(INFO, "Response status for word page fetch request of word \"%s\": %d", word.data(), response->status);
     if (response->status != 200) {
