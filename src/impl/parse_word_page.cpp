@@ -7,6 +7,8 @@
 #include "../proto/parse_word_page.h"
 #include "../proto/exceptions.h"
 #include "../proto/wiktionary.h"
+#include "lexbor/core/base.h"
+#include "lexbor/dom/collection.h"
 
 #include <iostream>
 
@@ -17,6 +19,7 @@ std::string support_lang_enum_to_name(SupportedLanguage lang){
             return "English";
     }
     return "English";
+
 }
 
 ParseWordPage::ParseWordPage(
@@ -67,7 +70,6 @@ ParseWordPage::ParseWordPage(
     ParseWordPage::english_collection = lxb_dom_collection_make(
             &ParseWordPage::document->dom_document, 128
     );
-
 }
 
 void ParseWordPage::get_data() {
@@ -77,22 +79,32 @@ void ParseWordPage::get_data() {
             this->body_node,
             this->selector_list,
             [](lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx) -> lxb_status_t {
-                // lxb_html_serialize_cb(
-                //     node->parent->next->next->next->next,
-                //     [](const lxb_char_t *data, size_t len, void *ctx) -> lxb_status_t {
-                //         std::cout << data;
-                //         return LXB_STATUS_OK;
-                //     },
-                //     NULL
-                // );
-                // std::cout << '\n';
+                ParseWordPage* word_page_parser = (ParseWordPage*) ctx;
 
+                word_page_parser->populate_english_headers(node->parent);
                 
                 return LXB_STATUS_OK;
             },
-            NULL
+            this
     );
     if (status != LXB_STATUS_OK) {
         throw AppException(205, "Couldn't find selector.");
+    }
+}
+
+void ParseWordPage::populate_english_headers(lxb_dom_node_t* initial_node) {
+    ParseWordPage::english_main_header_collection = lxb_dom_collection_make(&this->document->dom_document, 128);
+
+    lxb_status_t status = lxb_dom_node_by_tag_name(initial_node->parent, this->english_main_header_collection, (const lxb_char_t *) "h3", 2);
+    if (status != LXB_STATUS_OK) {
+        throw AppException(206, "Couldn't find English main header's sub-headers.");
+    }
+
+    std::cout << lxb_dom_collection_length(this->english_main_header_collection) << std::endl;
+
+    for (int i = 0; i < lxb_dom_collection_length(this->english_main_header_collection); ++i) {
+        auto element = lxb_dom_collection_element(this->english_main_header_collection, i);
+        size_t len = 2;
+        std::cout << lxb_dom_element_tag_name(element, &len) << std::endl;
     }
 }
