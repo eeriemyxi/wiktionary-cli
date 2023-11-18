@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 include(FetchContent)
 
+set(CMAKE_C_COMPILER "clang")
+set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "include-what-you-use")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(wiktionary-cli

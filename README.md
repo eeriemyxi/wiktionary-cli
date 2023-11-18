@@ -5,6 +5,9 @@ This project, as of now, is fully unfinished.
 
 # Build
 I depend on CMake. Instructions assume your CWD is this project directory.
+You are also required to have the following packages installed:
+- `include-what-you-use` (v0.20)
+- `clang`, `clang++` (v16)
 
 Do it using GNU Make, or Ninja. No need to do both.
 
