@@ -5,14 +5,15 @@
 #include <lexbor/html/html.h>
 
 #include "../proto/wiktionary.h"
-#include "lexbor/dom/interface.h"
 
 #include <string>
 #include <unordered_map>
 
-
 class ParseWordPage {
     public:
+        size_t MAX_TITLE_LEN = 20;
+        size_t MAX_TEXT_LEN = 2048;
+
         std::string word;
         std::string html;
         
@@ -28,6 +29,12 @@ class ParseWordPage {
 
         ParseWordPage(const std::string& word, const std::string& html, const SupportedLanguage& lang);
         void get_data();
+
     private:
-        void populate_english_headers(lxb_dom_node_t* initial_node);
+        void parse_english_headers(lxb_dom_node_t* h3_node);
+        void handle_header_pronunciation(lxb_dom_node_t* node);
+        void handle_header_etymology(lxb_dom_node_t* node);
+        void handle_header_references(lxb_dom_node_t* node);
+        void handle_header_further_reading(lxb_dom_node_t* node);
+        void handle_header_anagrams(lxb_dom_node_t* node);
 };

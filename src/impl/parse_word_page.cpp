@@ -7,8 +7,6 @@
 #include "../proto/parse_word_page.h"
 #include "../proto/exceptions.h"
 #include "../proto/wiktionary.h"
-#include "lexbor/core/base.h"
-#include "lexbor/dom/collection.h"
 
 #include <iostream>
 
@@ -70,6 +68,10 @@ ParseWordPage::ParseWordPage(
     ParseWordPage::english_collection = lxb_dom_collection_make(
             &ParseWordPage::document->dom_document, 128
     );
+
+    ParseWordPage::english_main_header_collection = lxb_dom_collection_make(
+            &this->document->dom_document, 128
+    );
 }
 
 void ParseWordPage::get_data() {
@@ -78,10 +80,11 @@ void ParseWordPage::get_data() {
             this->selectors,
             this->body_node,
             this->selector_list,
-            [](lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx) -> lxb_status_t {
+            [](lxb_dom_node_t *node, lxb_css_selector_specificity_t spec, void *ctx)
+                -> lxb_status_t {
                 ParseWordPage* word_page_parser = (ParseWordPage*) ctx;
 
-                word_page_parser->populate_english_headers(node->parent);
+                word_page_parser->parse_english_headers(node->parent->next);
                 
                 return LXB_STATUS_OK;
             },
@@ -92,19 +95,58 @@ void ParseWordPage::get_data() {
     }
 }
 
-void ParseWordPage::populate_english_headers(lxb_dom_node_t* initial_node) {
-    ParseWordPage::english_main_header_collection = lxb_dom_collection_make(&this->document->dom_document, 128);
+void ParseWordPage::parse_english_headers(lxb_dom_node_t* h2_node) {
+    auto cur_node = h2_node;
 
-    lxb_status_t status = lxb_dom_node_by_tag_name(initial_node->parent, this->english_main_header_collection, (const lxb_char_t *) "h3", 2);
-    if (status != LXB_STATUS_OK) {
-        throw AppException(206, "Couldn't find English main header's sub-headers.");
+    while (cur_node != NULL) {
+        auto node_name = lxb_dom_node_name(cur_node, &this->MAX_TITLE_LEN);
+        if (memcmp(node_name, "H2", 2) == 0) {
+            std::cout << "Node name is H2" << '\n';
+            return;
+        }
+        if (memcmp(node_name, "H3", 2) == 0) {
+            std::string header_name = reinterpret_cast<char*>(
+                    lxb_dom_node_text_content(
+                        cur_node->first_child, &this->MAX_TITLE_LEN
+                    )
+            );
+            std::cout << "HEADER: " << header_name << '\n';
+            if (header_name == "Pronunciation") {
+                this->handle_header_pronunciation(cur_node);
+            }
+            else if (header_name.substr(0, header_name.find_first_of(' ')) == "Etymology") {
+                this->handle_header_etymology(cur_node);
+            }
+            else if (header_name == "References") {
+                this->handle_header_references(cur_node);
+            }
+            else if (header_name == "Further reading") {
+                this->handle_header_further_reading(cur_node);
+            }
+            else if (header_name == "Anagrams") {
+                this->handle_header_anagrams(cur_node);
+            }
+        }
+        cur_node = cur_node->next;
     }
+}
 
-    std::cout << lxb_dom_collection_length(this->english_main_header_collection) << std::endl;
+void ParseWordPage::handle_header_pronunciation(lxb_dom_node_t* node) {
+    std::cout << "Handle header pronunciation" << '\n';
+}
 
-    for (int i = 0; i < lxb_dom_collection_length(this->english_main_header_collection); ++i) {
-        auto element = lxb_dom_collection_element(this->english_main_header_collection, i);
-        size_t len = 2;
-        std::cout << lxb_dom_element_tag_name(element, &len) << std::endl;
-    }
+void ParseWordPage::handle_header_etymology(lxb_dom_node_t* node) {
+    std::cout << "Handle header etymology" << '\n';
+}
+
+void ParseWordPage::handle_header_references(lxb_dom_node_t* node) {
+    std::cout << "Handle header references" << '\n';
+}
+
+void ParseWordPage::handle_header_further_reading(lxb_dom_node_t* node) {
+    std::cout << "Handle header further reading" << '\n';
+}
+
+void ParseWordPage::handle_header_anagrams(lxb_dom_node_t* node) {
+    std::cout << "Handle header anagrams" << '\n';
 }
