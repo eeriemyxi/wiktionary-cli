@@ -1,5 +1,4 @@
 #pragma once
-#include <httplib.h>
 
 #include "../proto/wiktionary_http_fetch.h"
 
