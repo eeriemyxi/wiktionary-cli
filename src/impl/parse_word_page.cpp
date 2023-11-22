@@ -127,6 +127,7 @@ void ParseWordPage::parse_english_headers(lxb_dom_node_t* h2_node) {
                     for (const auto& [name, handler] : mp) {
                         if (name == header_name) {
                             (this->*handler)(cur_node);
+                            break;
                         }
                     }
                 }
