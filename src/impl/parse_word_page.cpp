@@ -9,6 +9,7 @@
 #include "../proto/wiktionary.h"
 
 #include <iostream>
+#include <unordered_map>
 
 // Converts `SupportedLanguage` enum to string values.
 std::string support_lang_enum_to_name(SupportedLanguage lang){
@@ -111,20 +112,24 @@ void ParseWordPage::parse_english_headers(lxb_dom_node_t* h2_node) {
                     )
             );
             std::cout << "HEADER: " << header_name << '\n';
-            if (header_name == "Pronunciation") {
-                this->handle_header_pronunciation(cur_node);
-            }
-            else if (header_name.substr(0, header_name.find_first_of(' ')) == "Etymology") {
-                this->handle_header_etymology(cur_node);
-            }
-            else if (header_name == "References") {
-                this->handle_header_references(cur_node);
-            }
-            else if (header_name == "Further reading") {
-                this->handle_header_further_reading(cur_node);
-            }
-            else if (header_name == "Anagrams") {
-                this->handle_header_anagrams(cur_node);
+            {
+                if (header_name.substr(0, header_name.find_first_of(' ')) == "Etymology") {
+                    this->handle_header_etymology(cur_node);
+                } else {
+
+                    std::unordered_map<std::string, void (ParseWordPage::*)(lxb_dom_node_t*)> mp = {
+                        {"Pronunciation",     &ParseWordPage::handle_header_pronunciation},
+                        {"References",        &ParseWordPage::handle_header_references},
+                        {"Further reading",   &ParseWordPage::handle_header_further_reading},
+                        {"Anagrams",          &ParseWordPage::handle_header_anagrams},
+                    };
+
+                    for (const auto& [name, handler] : mp) {
+                        if (name == header_name) {
+                            (this->*handler)(cur_node);
+                        }
+                    }
+                }
             }
         }
         cur_node = cur_node->next;
